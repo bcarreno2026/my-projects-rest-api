@@ -1,11 +1,20 @@
 import { Hono } from 'hono'
-import { listProjects, getProjectById, createProject, updateProject,deleteProject } from '../data/store.js'
+import { 
+  listProjects, 
+  getProjectById, 
+  createProject, 
+  updateProject,
+  deleteProject 
+} from '../data/store.js'
 
 import { parseJsonBody } from '../utils/body.js'
 import { ApiError } from '../utils/errors.js'
 import { sendCollection, sendResource } from '../utils/response.js'
-import { parseIdParam, validateProjectCreate, validateProjectPatch } from '../utils/validation.js'
-import { parseJsonBody } from '../utils/body.js'
+import { parseIdParam, 
+  validateProjectCreate, 
+  validateProjectPatch, 
+} from '../utils/validation.js'
+
 
 const projects = new Hono()
 
