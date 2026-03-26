@@ -1,4 +1,4 @@
-import { z } from 'zod' 
+import { z } from 'zod'
 import { ApiError } from './errors.js'
 import { TASK_STATUSES } from './constants.js'
 
@@ -12,7 +12,7 @@ const idParamSchema = z
     error: 'ID must be a positive integer.',
   })
 
-  const projectCreateSchema = z.strictObject({
+const projectCreateSchema = z.strictObject({
   name: z
     .string({ error: 'Project name is required.' })
     .trim()
@@ -41,30 +41,29 @@ const projectPatchSchema = z
     }
   })
 
-    const taskCreateSchema = z.strictObject({
+const taskCreateSchema = z.strictObject({
   title: z
     .string({ error: 'Task name is required.' })
     .trim()
     .min(1, { error: 'Task name is required.' }),
   description: z.string({ error: 'Description must be a string.' }).optional(),
   status: z
-  .string({ error: statusMessage})
-  .refine((value) => TASK_STATUSES.includes(value), { error: statusMessage})
-  .optional(),
-
+    .string({ error: statusMessage })
+    .refine((value) => TASK_STATUSES.includes(value), { error: statusMessage })
+    .optional(),
 })
 
 const taskPatchSchema = z
   .object({
     title: z
-      .string({ error: 'Task title must be a non-empty string.'})
+      .string({ error: 'Task title must be a non-empty string.' })
       .trim()
       .min(1, { error: 'Task title must be a non-empty string.' })
       .optional(),
     description: z
-    .string({ error: 'Description must be a string.' })
-    .optional(),
-     status: z
+      .string({ error: 'Description must be a string.' })
+      .optional(),
+    status: z
       .string({ error: statusMessage })
       .refine((value) => TASK_STATUSES.includes(value), {
         error: statusMessage,
@@ -81,8 +80,7 @@ const taskPatchSchema = z
     }
   })
 
-
-  export function parseIdParam(rawValue, fieldName = 'id') {
+export function parseIdParam(rawValue, fieldName = 'id') {
   const result = idParamSchema.safeParse(rawValue)
 
   if (!result.success) {
@@ -142,7 +140,6 @@ export function validateProjectPatch(payload) {
   return validateWithSchema(payload, projectPatchSchema)
 }
 
-
 export function validateTaskCreate(payload) {
   return validateWithSchema(payload, taskCreateSchema)
 }
@@ -150,4 +147,3 @@ export function validateTaskCreate(payload) {
 export function validateTaskPatch(payload) {
   return validateWithSchema(payload, taskPatchSchema)
 }
-
