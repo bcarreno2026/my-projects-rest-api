@@ -8,7 +8,7 @@ let projects = [
     created_at: seededAt,
     updated_at: seededAt,
   },
-   {
+  {
     id: 2,
     name: 'Being creative with API',
     description: 'Adding items to the API',
@@ -17,17 +17,48 @@ let projects = [
   },
 ]
 
-let nextProjectId = 3
+let tasks = [
+  {
+    id: 1,
+    project_id: 1,
+    title: 'Draft homepage wireframes',
+    description: 'Create desktop and mobile layout drafts.',
+    status: 'in_progress',
+    created_at: seededAt,
+    updated_at: seededAt,
+  },
+  {
+    id: 2,
+    project_id: 1,
+    title: 'Collect new screenshots',
+    description: 'Replace old portfolio images.',
+    status: 'todo',
+    created_at: seededAt,
+    updated_at: seededAt,
+  },
+  {
+    id: 3,
+    project_id: 2,
+    title: 'Finalize slide deck',
+    description: 'Include examples of good API design.',
+    status: 'done',
+    created_at: seededAt,
+    updated_at: seededAt,
+  },
+]
 
-  function clone(item){
-    return { ...item }
+let nextProjectId = 3
+let nextTaskId = 4
+
+function clone(item) {
+  return { ...item }
 }
 
 function nowIso() {
   return new Date().toISOString()
 }
 
-export function listProjects(){
+export function listProjects() {
   return projects.map(clone)
 }
 
@@ -36,7 +67,7 @@ export function getProjectById(id) {
   return project ? clone(project) : null
 }
 export function createProject(input) {
-  const timestamp =nowIso()
+  const timestamp = nowIso()
   const project = {
     id: nextProjectId,
     name: input.name.trim(),
@@ -49,38 +80,92 @@ export function createProject(input) {
   projects.push(project)
 
   return clone(project)
+}
 
+export function updateProject(id, input) {
+  const index = projects.findIndex((item) => item.id === id)
+
+  if (index === -1) {
+    return null
   }
 
-  export function updateProject(id, input) {
-    const index = projects.findIndex((item) => item.id === id)
-
-    if (index === -1){
-      return null
-    }
-
-    const current = projects[index]
-    const updated = {
-      ...current,
-      ...('name' in input ? { name: input.name.trim() } : {}),
-      ...('description' in input
-        ? { description: input.description.trim() }
-        : {}),
-      updated_at: nowIso(),
-    }
-
-    projects[index] = updated
-    return clone(updated)
+  const current = projects[index]
+  const updated = {
+    ...current,
+    ...('name' in input ? { name: input.name.trim() } : {}),
+    ...('description' in input
+      ? { description: input.description.trim() }
+      : {}),
+    updated_at: nowIso(),
   }
 
-  export function deleteProject(id) {
-    const startSize = projects.length
-    projects = projects.filter((item) => item.id !== id)
+  projects[index] = updated
+  return clone(updated)
+}
 
-    if (projects.length === startSize) {
-      return false
-    }
+export function deleteProject(id) {
+  const startSize = projects.length
+  projects = projects.filter((item) => item.id !== id)
 
-    return true
+  if (projects.length === startSize) {
+    return false
   }
 
+  tasks = tasks.filter((task) => task.project_id !== id)
+
+  return true
+}
+
+export function listTasksByProject(projectId) {
+  return tasks.filter((task) => task.project_id === projectId).map(clone)
+}
+
+export function createTask(projectId, input) {
+  const timestamp = nowIso()
+  const task = {
+    id: nextTaskId,
+    project_id: projectId,
+    title: input.title.trim(),
+    description: input.description?.trim() || '',
+    status: input.status || 'todo',
+    created_at: timestamp,
+    updated_at: timestamp,
+  }
+
+  nextTaskId += 1
+  tasks.push(task)
+
+  return clone(task)
+}
+
+export function getTaskById(id) {
+  const task = tasks.find((item) => item.id === id)
+  return task ? clone(task) : null
+}
+
+export function updateTask(id, input) {
+  const index = tasks.findIndex((item) => item.id === id)
+
+  if (index === -1) {
+    return null
+  }
+
+  const current = tasks[index]
+  const updated = {
+    ...current,
+    ...('title' in input ? { title: input.title.trim() } : {}),
+    ...('description' in input
+      ? { description: input.description.trim() }
+      : {}),
+    ...('status' in input ? { status: input.status } : {}),
+    updated_at: nowIso(),
+  }
+
+  tasks[index] = updated
+  return clone(updated)
+}
+export function deleteTask(id) {
+  const startSize = tasks.length
+  tasks = tasks.filter((item) => item.id !== id)
+  return tasks.length !== startSize
+}
