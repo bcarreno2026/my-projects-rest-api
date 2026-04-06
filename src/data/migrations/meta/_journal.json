@@ -8,6 +8,20 @@
       "when": 1775337868931,
       "tag": "0000_fancy_raider",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1775494342846,
+      "tag": "0001_flat_wild_child",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1775496542870,
+      "tag": "0002_dazzling_juggernaut",
+      "breakpoints": true
     }
   ]
 }
