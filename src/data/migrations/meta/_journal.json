@@ -22,6 +22,13 @@
       "when": 1775496542870,
       "tag": "0002_dazzling_juggernaut",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1776535129181,
+      "tag": "0003_clumsy_wendell_vaughn",
+      "breakpoints": true
     }
   ]
 }
